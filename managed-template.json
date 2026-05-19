@@ -12,8 +12,9 @@
     "location": {
       "type": "string",
       "defaultValue": "swedencentral",
+      "allowedValues": ["swedencentral"],
       "metadata": {
-        "description": "Azure-Region (nicht aendern)"
+        "description": "Azure-Region (Sweden Central, DSGVO-konform)"
       }
     }
   },
