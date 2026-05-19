@@ -9,14 +9,6 @@
         "description": "Kundenname (wird fuer Ressourcennamen verwendet, z.B. 'musterfirma')"
       }
     },
-    "location": {
-      "type": "string",
-      "defaultValue": "swedencentral",
-      "allowedValues": ["swedencentral"],
-      "metadata": {
-        "description": "Azure-Region (Sweden Central, DSGVO-konform)"
-      }
-    }
   },
   "variables": {
     "managedByTenantId": "427cd055-9da8-43d4-9c0d-3e06c5197bda",
@@ -68,7 +60,7 @@
       "type": "Microsoft.Resources/resourceGroups",
       "apiVersion": "2024-03-01",
       "name": "[variables('resourceGroupName')]",
-      "location": "[parameters('location')]",
+      "location": "swedencentral",
       "tags": {
         "managed-by": "AWEOS",
         "purpose": "KI-Infrastruktur"
@@ -92,7 +84,7 @@
               "type": "Microsoft.CognitiveServices/accounts",
               "apiVersion": "2025-12-01",
               "name": "[variables('accountName')]",
-              "location": "[parameters('location')]",
+              "location": "swedencentral",
               "sku": {
                 "name": "S0"
               },
@@ -466,7 +458,7 @@
               "type": "Microsoft.CognitiveServices/accounts/projects",
               "apiVersion": "2025-12-01",
               "name": "[concat(variables('accountName'), '/', variables('projectName'))]",
-              "location": "[parameters('location')]",
+              "location": "swedencentral",
               "dependsOn": [
                 "[resourceId('Microsoft.CognitiveServices/accounts', variables('accountName'))]"
               ],
