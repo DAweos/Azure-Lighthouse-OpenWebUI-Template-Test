@@ -75,18 +75,23 @@
         "[resourceId('Microsoft.Resources/resourceGroups', variables('resourceGroupName'))]"
       ],
       "properties": {
-        "expressionEvaluationOptions": {
-          "scope": "outer"
-        },
         "mode": "Incremental",
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
           "contentVersion": "1.0.0.0",
+          "parameters": {
+            "accountName": {
+              "type": "string"
+            },
+            "projectName": {
+              "type": "string"
+            }
+          },
           "resources": [
             {
               "type": "Microsoft.CognitiveServices/accounts",
               "apiVersion": "2025-12-01",
-              "name": "[variables('accountName')]",
+              "name": "[parameters('accountName')]",
               "location": "swedencentral",
               "sku": {
                 "name": "S0"
@@ -97,7 +102,7 @@
               },
               "properties": {
                 "apiProperties": {},
-                "customSubDomainName": "[variables('accountName')]",
+                "customSubDomainName": "[parameters('accountName')]",
                 "networkAcls": {
                   "defaultAction": "Allow",
                   "virtualNetworkRules": [],
@@ -111,9 +116,9 @@
             {
               "type": "Microsoft.CognitiveServices/accounts/defenderForAISettings",
               "apiVersion": "2025-12-01",
-              "name": "[concat(variables('accountName'), '/Default')]",
+              "name": "[concat(parameters('accountName'), '/Default')]",
               "dependsOn": [
-                "[resourceId('Microsoft.CognitiveServices/accounts', variables('accountName'))]"
+                "[resourceId('Microsoft.CognitiveServices/accounts', parameters('accountName'))]"
               ],
               "properties": {
                 "state": "Disabled"
@@ -122,196 +127,58 @@
             {
               "type": "Microsoft.CognitiveServices/accounts/raiPolicies",
               "apiVersion": "2025-12-01",
-              "name": "[concat(variables('accountName'), '/Microsoft.Default')]",
+              "name": "[concat(parameters('accountName'), '/Microsoft.Default')]",
               "dependsOn": [
-                "[resourceId('Microsoft.CognitiveServices/accounts', variables('accountName'))]"
+                "[resourceId('Microsoft.CognitiveServices/accounts', parameters('accountName'))]"
               ],
               "properties": {
                 "mode": "Blocking",
                 "contentFilters": [
-                  {
-                    "name": "Hate",
-                    "severityThreshold": "Medium",
-                    "blocking": true,
-                    "enabled": true,
-                    "source": "Prompt",
-                    "action": "NONE"
-                  },
-                  {
-                    "name": "Hate",
-                    "severityThreshold": "Medium",
-                    "blocking": true,
-                    "enabled": true,
-                    "source": "Completion",
-                    "action": "NONE"
-                  },
-                  {
-                    "name": "Sexual",
-                    "severityThreshold": "Medium",
-                    "blocking": true,
-                    "enabled": true,
-                    "source": "Prompt",
-                    "action": "NONE"
-                  },
-                  {
-                    "name": "Sexual",
-                    "severityThreshold": "Medium",
-                    "blocking": true,
-                    "enabled": true,
-                    "source": "Completion",
-                    "action": "NONE"
-                  },
-                  {
-                    "name": "Violence",
-                    "severityThreshold": "Medium",
-                    "blocking": true,
-                    "enabled": true,
-                    "source": "Prompt",
-                    "action": "NONE"
-                  },
-                  {
-                    "name": "Violence",
-                    "severityThreshold": "Medium",
-                    "blocking": true,
-                    "enabled": true,
-                    "source": "Completion",
-                    "action": "NONE"
-                  },
-                  {
-                    "name": "Selfharm",
-                    "severityThreshold": "Medium",
-                    "blocking": true,
-                    "enabled": true,
-                    "source": "Prompt",
-                    "action": "NONE"
-                  },
-                  {
-                    "name": "Selfharm",
-                    "severityThreshold": "Medium",
-                    "blocking": true,
-                    "enabled": true,
-                    "source": "Completion",
-                    "action": "NONE"
-                  }
+                  { "name": "Hate", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Prompt", "action": "NONE" },
+                  { "name": "Hate", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Completion", "action": "NONE" },
+                  { "name": "Sexual", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Prompt", "action": "NONE" },
+                  { "name": "Sexual", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Completion", "action": "NONE" },
+                  { "name": "Violence", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Prompt", "action": "NONE" },
+                  { "name": "Violence", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Completion", "action": "NONE" },
+                  { "name": "Selfharm", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Prompt", "action": "NONE" },
+                  { "name": "Selfharm", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Completion", "action": "NONE" }
                 ]
               }
             },
             {
               "type": "Microsoft.CognitiveServices/accounts/raiPolicies",
               "apiVersion": "2025-12-01",
-              "name": "[concat(variables('accountName'), '/Microsoft.DefaultV2')]",
+              "name": "[concat(parameters('accountName'), '/Microsoft.DefaultV2')]",
               "dependsOn": [
-                "[resourceId('Microsoft.CognitiveServices/accounts', variables('accountName'))]"
+                "[resourceId('Microsoft.CognitiveServices/accounts', parameters('accountName'))]"
               ],
               "properties": {
                 "mode": "Blocking",
                 "contentFilters": [
-                  {
-                    "name": "Hate",
-                    "severityThreshold": "Medium",
-                    "blocking": true,
-                    "enabled": true,
-                    "source": "Prompt",
-                    "action": "NONE"
-                  },
-                  {
-                    "name": "Hate",
-                    "severityThreshold": "Medium",
-                    "blocking": true,
-                    "enabled": true,
-                    "source": "Completion",
-                    "action": "NONE"
-                  },
-                  {
-                    "name": "Sexual",
-                    "severityThreshold": "Medium",
-                    "blocking": true,
-                    "enabled": true,
-                    "source": "Prompt",
-                    "action": "NONE"
-                  },
-                  {
-                    "name": "Sexual",
-                    "severityThreshold": "Medium",
-                    "blocking": true,
-                    "enabled": true,
-                    "source": "Completion",
-                    "action": "NONE"
-                  },
-                  {
-                    "name": "Violence",
-                    "severityThreshold": "Medium",
-                    "blocking": true,
-                    "enabled": true,
-                    "source": "Prompt",
-                    "action": "NONE"
-                  },
-                  {
-                    "name": "Violence",
-                    "severityThreshold": "Medium",
-                    "blocking": true,
-                    "enabled": true,
-                    "source": "Completion",
-                    "action": "NONE"
-                  },
-                  {
-                    "name": "Selfharm",
-                    "severityThreshold": "Medium",
-                    "blocking": true,
-                    "enabled": true,
-                    "source": "Prompt",
-                    "action": "NONE"
-                  },
-                  {
-                    "name": "Selfharm",
-                    "severityThreshold": "Medium",
-                    "blocking": true,
-                    "enabled": true,
-                    "source": "Completion",
-                    "action": "NONE"
-                  },
-                  {
-                    "name": "Jailbreak",
-                    "blocking": true,
-                    "enabled": true,
-                    "source": "Prompt",
-                    "action": "NONE"
-                  },
-                  {
-                    "name": "Protected Material Text",
-                    "blocking": true,
-                    "enabled": true,
-                    "source": "Completion",
-                    "action": "NONE"
-                  },
-                  {
-                    "name": "Protected Material Code",
-                    "blocking": false,
-                    "enabled": true,
-                    "source": "Completion",
-                    "action": "NONE"
-                  }
+                  { "name": "Hate", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Prompt", "action": "NONE" },
+                  { "name": "Hate", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Completion", "action": "NONE" },
+                  { "name": "Sexual", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Prompt", "action": "NONE" },
+                  { "name": "Sexual", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Completion", "action": "NONE" },
+                  { "name": "Violence", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Prompt", "action": "NONE" },
+                  { "name": "Violence", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Completion", "action": "NONE" },
+                  { "name": "Selfharm", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Prompt", "action": "NONE" },
+                  { "name": "Selfharm", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Completion", "action": "NONE" },
+                  { "name": "Jailbreak", "blocking": true, "enabled": true, "source": "Prompt", "action": "NONE" },
+                  { "name": "Protected Material Text", "blocking": true, "enabled": true, "source": "Completion", "action": "NONE" },
+                  { "name": "Protected Material Code", "blocking": false, "enabled": true, "source": "Completion", "action": "NONE" }
                 ]
               }
             },
             {
               "type": "Microsoft.CognitiveServices/accounts/deployments",
               "apiVersion": "2025-12-01",
-              "name": "[concat(variables('accountName'), '/DeepSeek-R1')]",
+              "name": "[concat(parameters('accountName'), '/DeepSeek-R1')]",
               "dependsOn": [
-                "[resourceId('Microsoft.CognitiveServices/accounts', variables('accountName'))]",
-                "[resourceId('Microsoft.CognitiveServices/accounts/raiPolicies', variables('accountName'), 'Microsoft.DefaultV2')]"
+                "[resourceId('Microsoft.CognitiveServices/accounts/raiPolicies', parameters('accountName'), 'Microsoft.DefaultV2')]"
               ],
-              "sku": {
-                "name": "GlobalStandard",
-                "capacity": 250
-              },
+              "sku": { "name": "GlobalStandard", "capacity": 250 },
               "properties": {
-                "model": {
-                  "format": "DeepSeek",
-                  "name": "DeepSeek-R1",
-                  "version": "1"
-                },
+                "model": { "format": "DeepSeek", "name": "DeepSeek-R1", "version": "1" },
                 "versionUpgradeOption": "OnceNewDefaultVersionAvailable",
                 "currentCapacity": 250,
                 "raiPolicyName": "Microsoft.DefaultV2"
@@ -320,22 +187,13 @@
             {
               "type": "Microsoft.CognitiveServices/accounts/deployments",
               "apiVersion": "2025-12-01",
-              "name": "[concat(variables('accountName'), '/gpt-4.1-mini')]",
+              "name": "[concat(parameters('accountName'), '/gpt-4.1-mini')]",
               "dependsOn": [
-                "[resourceId('Microsoft.CognitiveServices/accounts', variables('accountName'))]",
-                "[resourceId('Microsoft.CognitiveServices/accounts/raiPolicies', variables('accountName'), 'Microsoft.DefaultV2')]",
-                "[resourceId('Microsoft.CognitiveServices/accounts/deployments', variables('accountName'), 'DeepSeek-R1')]"
+                "[resourceId('Microsoft.CognitiveServices/accounts/deployments', parameters('accountName'), 'DeepSeek-R1')]"
               ],
-              "sku": {
-                "name": "DataZoneStandard",
-                "capacity": 100
-              },
+              "sku": { "name": "DataZoneStandard", "capacity": 100 },
               "properties": {
-                "model": {
-                  "format": "OpenAI",
-                  "name": "gpt-4.1-mini",
-                  "version": "2025-04-14"
-                },
+                "model": { "format": "OpenAI", "name": "gpt-4.1-mini", "version": "2025-04-14" },
                 "versionUpgradeOption": "OnceNewDefaultVersionAvailable",
                 "currentCapacity": 100,
                 "raiPolicyName": "Microsoft.DefaultV2"
@@ -344,22 +202,13 @@
             {
               "type": "Microsoft.CognitiveServices/accounts/deployments",
               "apiVersion": "2025-12-01",
-              "name": "[concat(variables('accountName'), '/gpt-4o')]",
+              "name": "[concat(parameters('accountName'), '/gpt-4o')]",
               "dependsOn": [
-                "[resourceId('Microsoft.CognitiveServices/accounts', variables('accountName'))]",
-                "[resourceId('Microsoft.CognitiveServices/accounts/raiPolicies', variables('accountName'), 'Microsoft.DefaultV2')]",
-                "[resourceId('Microsoft.CognitiveServices/accounts/deployments', variables('accountName'), 'gpt-4.1-mini')]"
+                "[resourceId('Microsoft.CognitiveServices/accounts/deployments', parameters('accountName'), 'gpt-4.1-mini')]"
               ],
-              "sku": {
-                "name": "Standard",
-                "capacity": 42
-              },
+              "sku": { "name": "Standard", "capacity": 42 },
               "properties": {
-                "model": {
-                  "format": "OpenAI",
-                  "name": "gpt-4o",
-                  "version": "2024-11-20"
-                },
+                "model": { "format": "OpenAI", "name": "gpt-4o", "version": "2024-11-20" },
                 "versionUpgradeOption": "OnceNewDefaultVersionAvailable",
                 "currentCapacity": 42,
                 "raiPolicyName": "Microsoft.DefaultV2"
@@ -368,21 +217,13 @@
             {
               "type": "Microsoft.CognitiveServices/accounts/deployments",
               "apiVersion": "2025-12-01",
-              "name": "[concat(variables('accountName'), '/gpt-5-chat')]",
+              "name": "[concat(parameters('accountName'), '/gpt-5-chat')]",
               "dependsOn": [
-                "[resourceId('Microsoft.CognitiveServices/accounts', variables('accountName'))]",
-                "[resourceId('Microsoft.CognitiveServices/accounts/deployments', variables('accountName'), 'gpt-4o')]"
+                "[resourceId('Microsoft.CognitiveServices/accounts/deployments', parameters('accountName'), 'gpt-4o')]"
               ],
-              "sku": {
-                "name": "GlobalStandard",
-                "capacity": 20
-              },
+              "sku": { "name": "GlobalStandard", "capacity": 20 },
               "properties": {
-                "model": {
-                  "format": "OpenAI",
-                  "name": "gpt-5-chat",
-                  "version": "2025-10-03"
-                },
+                "model": { "format": "OpenAI", "name": "gpt-5-chat", "version": "2025-10-03" },
                 "versionUpgradeOption": "OnceNewDefaultVersionAvailable",
                 "currentCapacity": 20
               }
@@ -390,22 +231,13 @@
             {
               "type": "Microsoft.CognitiveServices/accounts/deployments",
               "apiVersion": "2025-12-01",
-              "name": "[concat(variables('accountName'), '/grok-3-mini')]",
+              "name": "[concat(parameters('accountName'), '/grok-3-mini')]",
               "dependsOn": [
-                "[resourceId('Microsoft.CognitiveServices/accounts', variables('accountName'))]",
-                "[resourceId('Microsoft.CognitiveServices/accounts/raiPolicies', variables('accountName'), 'Microsoft.DefaultV2')]",
-                "[resourceId('Microsoft.CognitiveServices/accounts/deployments', variables('accountName'), 'gpt-5-chat')]"
+                "[resourceId('Microsoft.CognitiveServices/accounts/deployments', parameters('accountName'), 'gpt-5-chat')]"
               ],
-              "sku": {
-                "name": "GlobalStandard",
-                "capacity": 400
-              },
+              "sku": { "name": "GlobalStandard", "capacity": 400 },
               "properties": {
-                "model": {
-                  "format": "xAI",
-                  "name": "grok-3-mini",
-                  "version": "1"
-                },
+                "model": { "format": "xAI", "name": "grok-3-mini", "version": "1" },
                 "versionUpgradeOption": "OnceNewDefaultVersionAvailable",
                 "currentCapacity": 400,
                 "raiPolicyName": "Microsoft.DefaultV2"
@@ -414,21 +246,13 @@
             {
               "type": "Microsoft.CognitiveServices/accounts/deployments",
               "apiVersion": "2025-12-01",
-              "name": "[concat(variables('accountName'), '/model-router')]",
+              "name": "[concat(parameters('accountName'), '/model-router')]",
               "dependsOn": [
-                "[resourceId('Microsoft.CognitiveServices/accounts', variables('accountName'))]",
-                "[resourceId('Microsoft.CognitiveServices/accounts/deployments', variables('accountName'), 'grok-3-mini')]"
+                "[resourceId('Microsoft.CognitiveServices/accounts/deployments', parameters('accountName'), 'grok-3-mini')]"
               ],
-              "sku": {
-                "name": "DataZoneStandard",
-                "capacity": 50
-              },
+              "sku": { "name": "DataZoneStandard", "capacity": 50 },
               "properties": {
-                "model": {
-                  "format": "OpenAI",
-                  "name": "model-router",
-                  "version": "2025-08-07"
-                },
+                "model": { "format": "OpenAI", "name": "model-router", "version": "2025-08-07" },
                 "versionUpgradeOption": "OnceNewDefaultVersionAvailable",
                 "currentCapacity": 50
               }
@@ -436,22 +260,13 @@
             {
               "type": "Microsoft.CognitiveServices/accounts/deployments",
               "apiVersion": "2025-12-01",
-              "name": "[concat(variables('accountName'), '/text-embedding-3-large')]",
+              "name": "[concat(parameters('accountName'), '/text-embedding-3-large')]",
               "dependsOn": [
-                "[resourceId('Microsoft.CognitiveServices/accounts', variables('accountName'))]",
-                "[resourceId('Microsoft.CognitiveServices/accounts/raiPolicies', variables('accountName'), 'Microsoft.DefaultV2')]",
-                "[resourceId('Microsoft.CognitiveServices/accounts/deployments', variables('accountName'), 'model-router')]"
+                "[resourceId('Microsoft.CognitiveServices/accounts/deployments', parameters('accountName'), 'model-router')]"
               ],
-              "sku": {
-                "name": "DataZoneStandard",
-                "capacity": 150
-              },
+              "sku": { "name": "DataZoneStandard", "capacity": 150 },
               "properties": {
-                "model": {
-                  "format": "OpenAI",
-                  "name": "text-embedding-3-large",
-                  "version": "1"
-                },
+                "model": { "format": "OpenAI", "name": "text-embedding-3-large", "version": "1" },
                 "versionUpgradeOption": "OnceNewDefaultVersionAvailable",
                 "currentCapacity": 150,
                 "raiPolicyName": "Microsoft.DefaultV2"
@@ -460,10 +275,10 @@
             {
               "type": "Microsoft.CognitiveServices/accounts/projects",
               "apiVersion": "2025-12-01",
-              "name": "[concat(variables('accountName'), '/', variables('projectName'))]",
+              "name": "[concat(parameters('accountName'), '/', parameters('projectName'))]",
               "location": "swedencentral",
               "dependsOn": [
-                "[resourceId('Microsoft.CognitiveServices/accounts', variables('accountName'))]"
+                "[resourceId('Microsoft.CognitiveServices/accounts', parameters('accountName'))]"
               ],
               "kind": "AIServices",
               "identity": {
@@ -472,6 +287,14 @@
               "properties": {}
             }
           ]
+        },
+        "parameters": {
+          "accountName": {
+            "value": "[variables('accountName')]"
+          },
+          "projectName": {
+            "value": "[variables('projectName')]"
+          }
         }
       }
     }
