@@ -8,7 +8,7 @@
       "metadata": {
         "description": "Kundenname (wird fuer Ressourcennamen verwendet, z.B. 'musterfirma')"
       }
-    },
+    }
   },
   "variables": {
     "managedByTenantId": "427cd055-9da8-43d4-9c0d-3e06c5197bda",
