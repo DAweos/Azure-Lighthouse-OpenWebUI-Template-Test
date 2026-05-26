@@ -134,11 +134,11 @@
               "dependsOn": [
                 "[resourceId('Microsoft.CognitiveServices/accounts/defenderForAISettings', parameters('accountName'), 'Default')]"
               ],
-              "sku": { "name": "GlobalStandard", "capacity": 250 },
+              "sku": { "name": "GlobalStandard", "capacity": 10 },
               "properties": {
                 "model": { "format": "DeepSeek", "name": "DeepSeek-R1", "version": "1" },
                 "versionUpgradeOption": "OnceNewDefaultVersionAvailable",
-                "currentCapacity": 250,
+                "currentCapacity": 10,
                 "raiPolicyName": "Microsoft.DefaultV2"
               }
             },
@@ -149,11 +149,11 @@
               "dependsOn": [
                 "[resourceId('Microsoft.CognitiveServices/accounts/deployments', parameters('accountName'), 'DeepSeek-R1')]"
               ],
-              "sku": { "name": "DataZoneStandard", "capacity": 100 },
+              "sku": { "name": "DataZoneStandard", "capacity": 10 },
               "properties": {
                 "model": { "format": "OpenAI", "name": "gpt-4.1-mini", "version": "2025-04-14" },
                 "versionUpgradeOption": "OnceNewDefaultVersionAvailable",
-                "currentCapacity": 100,
+                "currentCapacity": 10,
                 "raiPolicyName": "Microsoft.DefaultV2"
               }
             },
@@ -164,11 +164,11 @@
               "dependsOn": [
                 "[resourceId('Microsoft.CognitiveServices/accounts/deployments', parameters('accountName'), 'gpt-4.1-mini')]"
               ],
-              "sku": { "name": "Standard", "capacity": 42 },
+              "sku": { "name": "Standard", "capacity": 10 },
               "properties": {
                 "model": { "format": "OpenAI", "name": "gpt-4o", "version": "2024-11-20" },
                 "versionUpgradeOption": "OnceNewDefaultVersionAvailable",
-                "currentCapacity": 42,
+                "currentCapacity": 10,
                 "raiPolicyName": "Microsoft.DefaultV2"
               }
             },
@@ -179,11 +179,11 @@
               "dependsOn": [
                 "[resourceId('Microsoft.CognitiveServices/accounts/deployments', parameters('accountName'), 'gpt-4o')]"
               ],
-              "sku": { "name": "GlobalStandard", "capacity": 20 },
+              "sku": { "name": "GlobalStandard", "capacity": 10 },
               "properties": {
                 "model": { "format": "OpenAI", "name": "gpt-5-chat", "version": "2025-10-03" },
                 "versionUpgradeOption": "OnceNewDefaultVersionAvailable",
-                "currentCapacity": 20
+                "currentCapacity": 10
               }
             },
             {
@@ -193,11 +193,11 @@
               "dependsOn": [
                 "[resourceId('Microsoft.CognitiveServices/accounts/deployments', parameters('accountName'), 'gpt-5-chat')]"
               ],
-              "sku": { "name": "GlobalStandard", "capacity": 400 },
+              "sku": { "name": "GlobalStandard", "capacity": 10 },
               "properties": {
                 "model": { "format": "xAI", "name": "grok-3-mini", "version": "1" },
                 "versionUpgradeOption": "OnceNewDefaultVersionAvailable",
-                "currentCapacity": 400,
+                "currentCapacity": 10,
                 "raiPolicyName": "Microsoft.DefaultV2"
               }
             },
@@ -208,11 +208,11 @@
               "dependsOn": [
                 "[resourceId('Microsoft.CognitiveServices/accounts/deployments', parameters('accountName'), 'grok-3-mini')]"
               ],
-              "sku": { "name": "DataZoneStandard", "capacity": 50 },
+              "sku": { "name": "DataZoneStandard", "capacity": 10 },
               "properties": {
                 "model": { "format": "OpenAI", "name": "model-router", "version": "2025-08-07" },
                 "versionUpgradeOption": "OnceNewDefaultVersionAvailable",
-                "currentCapacity": 50
+                "currentCapacity": 10
               }
             },
             {
@@ -222,11 +222,11 @@
               "dependsOn": [
                 "[resourceId('Microsoft.CognitiveServices/accounts/deployments', parameters('accountName'), 'model-router')]"
               ],
-              "sku": { "name": "DataZoneStandard", "capacity": 150 },
+              "sku": { "name": "DataZoneStandard", "capacity": 10 },
               "properties": {
                 "model": { "format": "OpenAI", "name": "text-embedding-3-large", "version": "1" },
                 "versionUpgradeOption": "OnceNewDefaultVersionAvailable",
-                "currentCapacity": 150,
+                "currentCapacity": 10,
                 "raiPolicyName": "Microsoft.DefaultV2"
               }
             },
