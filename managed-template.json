@@ -128,35 +128,11 @@
               }
             },
             {
-              "type": "Microsoft.CognitiveServices/accounts/raiPolicies",
-              "apiVersion": "2025-12-01",
-              "name": "[concat(parameters('accountName'), '/Microsoft.DefaultV2')]",
-              "dependsOn": [
-                "[resourceId('Microsoft.CognitiveServices/accounts/defenderForAISettings', parameters('accountName'), 'Default')]"
-              ],
-              "properties": {
-                "mode": "Blocking",
-                "contentFilters": [
-                  { "name": "Hate", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Prompt", "action": "NONE" },
-                  { "name": "Hate", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Completion", "action": "NONE" },
-                  { "name": "Sexual", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Prompt", "action": "NONE" },
-                  { "name": "Sexual", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Completion", "action": "NONE" },
-                  { "name": "Violence", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Prompt", "action": "NONE" },
-                  { "name": "Violence", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Completion", "action": "NONE" },
-                  { "name": "Selfharm", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Prompt", "action": "NONE" },
-                  { "name": "Selfharm", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Completion", "action": "NONE" },
-                  { "name": "Jailbreak", "blocking": true, "enabled": true, "source": "Prompt", "action": "NONE" },
-                  { "name": "Protected Material Text", "blocking": true, "enabled": true, "source": "Completion", "action": "NONE" },
-                  { "name": "Protected Material Code", "blocking": false, "enabled": true, "source": "Completion", "action": "NONE" }
-                ]
-              }
-            },
-            {
               "type": "Microsoft.CognitiveServices/accounts/deployments",
               "apiVersion": "2025-12-01",
               "name": "[concat(parameters('accountName'), '/DeepSeek-R1')]",
               "dependsOn": [
-                "[resourceId('Microsoft.CognitiveServices/accounts/raiPolicies', parameters('accountName'), 'Microsoft.DefaultV2')]"
+                "[resourceId('Microsoft.CognitiveServices/accounts/defenderForAISettings', parameters('accountName'), 'Default')]"
               ],
               "sku": { "name": "GlobalStandard", "capacity": 250 },
               "properties": {
