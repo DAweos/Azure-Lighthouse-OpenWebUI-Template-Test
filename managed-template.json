@@ -130,30 +130,9 @@
             {
               "type": "Microsoft.CognitiveServices/accounts/raiPolicies",
               "apiVersion": "2025-12-01",
-              "name": "[concat(parameters('accountName'), '/Microsoft.Default')]",
-              "dependsOn": [
-                "[resourceId('Microsoft.CognitiveServices/accounts/defenderForAISettings', parameters('accountName'), 'Default')]"
-              ],
-              "properties": {
-                "mode": "Blocking",
-                "contentFilters": [
-                  { "name": "Hate", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Prompt", "action": "NONE" },
-                  { "name": "Hate", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Completion", "action": "NONE" },
-                  { "name": "Sexual", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Prompt", "action": "NONE" },
-                  { "name": "Sexual", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Completion", "action": "NONE" },
-                  { "name": "Violence", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Prompt", "action": "NONE" },
-                  { "name": "Violence", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Completion", "action": "NONE" },
-                  { "name": "Selfharm", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Prompt", "action": "NONE" },
-                  { "name": "Selfharm", "severityThreshold": "Medium", "blocking": true, "enabled": true, "source": "Completion", "action": "NONE" }
-                ]
-              }
-            },
-            {
-              "type": "Microsoft.CognitiveServices/accounts/raiPolicies",
-              "apiVersion": "2025-12-01",
               "name": "[concat(parameters('accountName'), '/Microsoft.DefaultV2')]",
               "dependsOn": [
-                "[resourceId('Microsoft.CognitiveServices/accounts/raiPolicies', parameters('accountName'), 'Microsoft.Default')]"
+                "[resourceId('Microsoft.CognitiveServices/accounts/defenderForAISettings', parameters('accountName'), 'Default')]"
               ],
               "properties": {
                 "mode": "Blocking",
