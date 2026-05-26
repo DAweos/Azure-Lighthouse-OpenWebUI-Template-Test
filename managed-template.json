@@ -132,7 +132,7 @@
               "apiVersion": "2025-12-01",
               "name": "[concat(parameters('accountName'), '/Microsoft.Default')]",
               "dependsOn": [
-                "[resourceId('Microsoft.CognitiveServices/accounts', parameters('accountName'))]"
+                "[resourceId('Microsoft.CognitiveServices/accounts/defenderForAISettings', parameters('accountName'), 'Default')]"
               ],
               "properties": {
                 "mode": "Blocking",
@@ -153,7 +153,7 @@
               "apiVersion": "2025-12-01",
               "name": "[concat(parameters('accountName'), '/Microsoft.DefaultV2')]",
               "dependsOn": [
-                "[resourceId('Microsoft.CognitiveServices/accounts', parameters('accountName'))]"
+                "[resourceId('Microsoft.CognitiveServices/accounts/raiPolicies', parameters('accountName'), 'Microsoft.Default')]"
               ],
               "properties": {
                 "mode": "Blocking",
@@ -281,7 +281,7 @@
               "name": "[concat(parameters('accountName'), '/', parameters('projectName'))]",
               "location": "swedencentral",
               "dependsOn": [
-                "[resourceId('Microsoft.CognitiveServices/accounts', parameters('accountName'))]"
+                "[resourceId('Microsoft.CognitiveServices/accounts/deployments', parameters('accountName'), 'text-embedding-3-large')]"
               ],
               "kind": "AIServices",
               "identity": {
