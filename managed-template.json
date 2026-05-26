@@ -4,7 +4,6 @@
   "parameters": {
     "customerName": {
       "type": "string",
-      "defaultValue": "testfirma",
       "metadata": {
         "description": "Kundenname (wird fuer Ressourcennamen verwendet, z.B. 'musterfirma')"
       }
