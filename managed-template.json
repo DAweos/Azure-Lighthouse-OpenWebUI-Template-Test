@@ -14,7 +14,6 @@
     "managedByTenantId": "427cd055-9da8-43d4-9c0d-3e06c5197bda",
     "resourceGroupName": "[concat('aweos-managed-', parameters('customerName'))]",
     "accountName": "[concat(parameters('customerName'), '-ai-resource')]",
-    "projectName": "[concat(parameters('customerName'), '-ai')]",
     "authorizations": [
       {
         "principalId": "461084a0-466c-47ad-b361-0d1e0836e852",
@@ -85,9 +84,6 @@
           "parameters": {
             "accountName": {
               "type": "string"
-            },
-            "projectName": {
-              "type": "string"
             }
           },
           "resources": [
@@ -115,143 +111,12 @@
                 "publicNetworkAccess": "Enabled",
                 "disableLocalAuth": false
               }
-            },
-            {
-              "type": "Microsoft.CognitiveServices/accounts/defenderForAISettings",
-              "apiVersion": "2025-12-01",
-              "name": "[concat(parameters('accountName'), '/Default')]",
-              "dependsOn": [
-                "[resourceId('Microsoft.CognitiveServices/accounts', parameters('accountName'))]"
-              ],
-              "properties": {
-                "state": "Disabled"
-              }
-            },
-            {
-              "type": "Microsoft.CognitiveServices/accounts/deployments",
-              "apiVersion": "2025-12-01",
-              "name": "[concat(parameters('accountName'), '/DeepSeek-R1')]",
-              "dependsOn": [
-                "[resourceId('Microsoft.CognitiveServices/accounts/defenderForAISettings', parameters('accountName'), 'Default')]"
-              ],
-              "sku": { "name": "GlobalStandard", "capacity": 10 },
-              "properties": {
-                "model": { "format": "DeepSeek", "name": "DeepSeek-R1", "version": "1" },
-                "versionUpgradeOption": "OnceNewDefaultVersionAvailable",
-                "currentCapacity": 10,
-                "raiPolicyName": "Microsoft.DefaultV2"
-              }
-            },
-            {
-              "type": "Microsoft.CognitiveServices/accounts/deployments",
-              "apiVersion": "2025-12-01",
-              "name": "[concat(parameters('accountName'), '/gpt-4.1-mini')]",
-              "dependsOn": [
-                "[resourceId('Microsoft.CognitiveServices/accounts/deployments', parameters('accountName'), 'DeepSeek-R1')]"
-              ],
-              "sku": { "name": "DataZoneStandard", "capacity": 10 },
-              "properties": {
-                "model": { "format": "OpenAI", "name": "gpt-4.1-mini", "version": "2025-04-14" },
-                "versionUpgradeOption": "OnceNewDefaultVersionAvailable",
-                "currentCapacity": 10,
-                "raiPolicyName": "Microsoft.DefaultV2"
-              }
-            },
-            {
-              "type": "Microsoft.CognitiveServices/accounts/deployments",
-              "apiVersion": "2025-12-01",
-              "name": "[concat(parameters('accountName'), '/gpt-4o')]",
-              "dependsOn": [
-                "[resourceId('Microsoft.CognitiveServices/accounts/deployments', parameters('accountName'), 'gpt-4.1-mini')]"
-              ],
-              "sku": { "name": "Standard", "capacity": 10 },
-              "properties": {
-                "model": { "format": "OpenAI", "name": "gpt-4o", "version": "2024-11-20" },
-                "versionUpgradeOption": "OnceNewDefaultVersionAvailable",
-                "currentCapacity": 10,
-                "raiPolicyName": "Microsoft.DefaultV2"
-              }
-            },
-            {
-              "type": "Microsoft.CognitiveServices/accounts/deployments",
-              "apiVersion": "2025-12-01",
-              "name": "[concat(parameters('accountName'), '/gpt-5-chat')]",
-              "dependsOn": [
-                "[resourceId('Microsoft.CognitiveServices/accounts/deployments', parameters('accountName'), 'gpt-4o')]"
-              ],
-              "sku": { "name": "GlobalStandard", "capacity": 10 },
-              "properties": {
-                "model": { "format": "OpenAI", "name": "gpt-5-chat", "version": "2025-10-03" },
-                "versionUpgradeOption": "OnceNewDefaultVersionAvailable",
-                "currentCapacity": 10
-              }
-            },
-            {
-              "type": "Microsoft.CognitiveServices/accounts/deployments",
-              "apiVersion": "2025-12-01",
-              "name": "[concat(parameters('accountName'), '/grok-3-mini')]",
-              "dependsOn": [
-                "[resourceId('Microsoft.CognitiveServices/accounts/deployments', parameters('accountName'), 'gpt-5-chat')]"
-              ],
-              "sku": { "name": "GlobalStandard", "capacity": 10 },
-              "properties": {
-                "model": { "format": "xAI", "name": "grok-3-mini", "version": "1" },
-                "versionUpgradeOption": "OnceNewDefaultVersionAvailable",
-                "currentCapacity": 10,
-                "raiPolicyName": "Microsoft.DefaultV2"
-              }
-            },
-            {
-              "type": "Microsoft.CognitiveServices/accounts/deployments",
-              "apiVersion": "2025-12-01",
-              "name": "[concat(parameters('accountName'), '/model-router')]",
-              "dependsOn": [
-                "[resourceId('Microsoft.CognitiveServices/accounts/deployments', parameters('accountName'), 'grok-3-mini')]"
-              ],
-              "sku": { "name": "DataZoneStandard", "capacity": 10 },
-              "properties": {
-                "model": { "format": "OpenAI", "name": "model-router", "version": "2025-08-07" },
-                "versionUpgradeOption": "OnceNewDefaultVersionAvailable",
-                "currentCapacity": 10
-              }
-            },
-            {
-              "type": "Microsoft.CognitiveServices/accounts/deployments",
-              "apiVersion": "2025-12-01",
-              "name": "[concat(parameters('accountName'), '/text-embedding-3-large')]",
-              "dependsOn": [
-                "[resourceId('Microsoft.CognitiveServices/accounts/deployments', parameters('accountName'), 'model-router')]"
-              ],
-              "sku": { "name": "DataZoneStandard", "capacity": 10 },
-              "properties": {
-                "model": { "format": "OpenAI", "name": "text-embedding-3-large", "version": "1" },
-                "versionUpgradeOption": "OnceNewDefaultVersionAvailable",
-                "currentCapacity": 10,
-                "raiPolicyName": "Microsoft.DefaultV2"
-              }
-            },
-            {
-              "type": "Microsoft.CognitiveServices/accounts/projects",
-              "apiVersion": "2025-12-01",
-              "name": "[concat(parameters('accountName'), '/', parameters('projectName'))]",
-              "location": "swedencentral",
-              "dependsOn": [
-                "[resourceId('Microsoft.CognitiveServices/accounts/deployments', parameters('accountName'), 'text-embedding-3-large')]"
-              ],
-              "kind": "AIServices",
-              "identity": {
-                "type": "SystemAssigned"
-              },
-              "properties": {}
             }
           ]
         },
         "parameters": {
           "accountName": {
             "value": "[variables('accountName')]"
-          },
-          "projectName": {
-            "value": "[variables('projectName')]"
           }
         }
       }
@@ -274,13 +139,9 @@
       "type": "string",
       "value": "[concat('https://', variables('accountName'), '.openai.azure.com/')]"
     },
-    "projectName": {
+    "hinweis": {
       "type": "string",
-      "value": "[variables('projectName')]"
-    },
-    "deployedModels": {
-      "type": "string",
-      "value": "DeepSeek-R1, gpt-4.1-mini, gpt-4o, gpt-5-chat, grok-3-mini, model-router, text-embedding-3-large"
+      "value": "AI Services Account erstellt. Modelle werden von AWEOS ueber Lighthouse deployed."
     }
   }
 }
