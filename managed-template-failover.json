@@ -1,0 +1,186 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-08-01/subscriptionDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "customerName": {
+      "type": "string",
+      "metadata": {
+        "description": "Kundenname (wird fuer Ressourcennamen verwendet, z.B. 'musterfirma')"
+      }
+    }
+  },
+  "variables": {
+    "managedByTenantId": "427cd055-9da8-43d4-9c0d-3e06c5197bda",
+    "resourceGroupName": "[concat('aweos-managed-', parameters('customerName'))]",
+    "accountName": "[concat(parameters('customerName'), '-ai-resource')]",
+    "accountNamePoland": "[concat(parameters('customerName'), '-ai-resource-pl')]",
+    "authorizations": [
+      {
+        "principalId": "461084a0-466c-47ad-b361-0d1e0836e852",
+        "principalIdDisplayName": "AWEOS-Lighthouse-Admins",
+        "roleDefinitionId": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+      },
+      {
+        "principalId": "461084a0-466c-47ad-b361-0d1e0836e852",
+        "principalIdDisplayName": "AWEOS-Lighthouse-Admins",
+        "roleDefinitionId": "43d0d8ad-25c7-4714-9337-8ba259a9fe05"
+      },
+      {
+        "principalId": "461084a0-466c-47ad-b361-0d1e0836e852",
+        "principalIdDisplayName": "AWEOS-Lighthouse-Admins",
+        "roleDefinitionId": "72fafb9e-0641-4937-9268-a91bfd8191a3"
+      }
+    ]
+  },
+  "resources": [
+    {
+      "type": "Microsoft.ManagedServices/registrationDefinitions",
+      "apiVersion": "2022-10-01",
+      "name": "[guid(variables('managedByTenantId'), subscription().subscriptionId)]",
+      "properties": {
+        "registrationDefinitionName": "AWEOS Managed KI-Service",
+        "description": "AWEOS verwaltet Ihre Azure-KI-Infrastruktur: Modelle, Monitoring und Kostenoptimierung.",
+        "managedByTenantId": "[variables('managedByTenantId')]",
+        "authorizations": "[variables('authorizations')]"
+      }
+    },
+    {
+      "type": "Microsoft.ManagedServices/registrationAssignments",
+      "apiVersion": "2022-10-01",
+      "name": "[guid(variables('managedByTenantId'), subscription().subscriptionId, 'assignment')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ManagedServices/registrationDefinitions', guid(variables('managedByTenantId'), subscription().subscriptionId))]"
+      ],
+      "properties": {
+        "registrationDefinitionId": "[resourceId('Microsoft.ManagedServices/registrationDefinitions', guid(variables('managedByTenantId'), subscription().subscriptionId))]"
+      }
+    },
+    {
+      "type": "Microsoft.Resources/resourceGroups",
+      "apiVersion": "2024-03-01",
+      "name": "[variables('resourceGroupName')]",
+      "location": "swedencentral",
+      "tags": {
+        "managed-by": "AWEOS",
+        "purpose": "KI-Infrastruktur"
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2024-03-01",
+      "name": "aiResourcesDeployment",
+      "resourceGroup": "[variables('resourceGroupName')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/resourceGroups', variables('resourceGroupName'))]"
+      ],
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {
+            "accountName": {
+              "type": "string"
+            },
+            "accountNamePoland": {
+              "type": "string"
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.CognitiveServices/accounts",
+              "apiVersion": "2025-12-01",
+              "name": "[parameters('accountName')]",
+              "location": "swedencentral",
+              "sku": {
+                "name": "S0"
+              },
+              "kind": "AIServices",
+              "identity": {
+                "type": "SystemAssigned"
+              },
+              "properties": {
+                "apiProperties": {},
+                "customSubDomainName": "[parameters('accountName')]",
+                "networkAcls": {
+                  "defaultAction": "Allow",
+                  "virtualNetworkRules": [],
+                  "ipRules": []
+                },
+                "allowProjectManagement": true,
+                "publicNetworkAccess": "Enabled",
+                "disableLocalAuth": false
+              }
+            },
+            {
+              "type": "Microsoft.CognitiveServices/accounts",
+              "apiVersion": "2025-12-01",
+              "name": "[parameters('accountNamePoland')]",
+              "location": "polandcentral",
+              "sku": {
+                "name": "S0"
+              },
+              "kind": "AIServices",
+              "identity": {
+                "type": "SystemAssigned"
+              },
+              "properties": {
+                "apiProperties": {},
+                "customSubDomainName": "[parameters('accountNamePoland')]",
+                "networkAcls": {
+                  "defaultAction": "Allow",
+                  "virtualNetworkRules": [],
+                  "ipRules": []
+                },
+                "allowProjectManagement": true,
+                "publicNetworkAccess": "Enabled",
+                "disableLocalAuth": false
+              }
+            }
+          ]
+        },
+        "parameters": {
+          "accountName": {
+            "value": "[variables('accountName')]"
+          },
+          "accountNamePoland": {
+            "value": "[variables('accountNamePoland')]"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "lighthouseStatus": {
+      "type": "string",
+      "value": "AWEOS Lighthouse-Delegation aktiv (Failover: Sweden Central + Poland Central)"
+    },
+    "resourceGroupName": {
+      "type": "string",
+      "value": "[variables('resourceGroupName')]"
+    },
+    "aiServicesAccountNamePrimary": {
+      "type": "string",
+      "value": "[variables('accountName')]"
+    },
+    "aiServicesEndpointPrimary": {
+      "type": "string",
+      "value": "[concat('https://', variables('accountName'), '.openai.azure.com/')]"
+    },
+    "aiServicesAccountNameFailover": {
+      "type": "string",
+      "value": "[variables('accountNamePoland')]"
+    },
+    "aiServicesEndpointFailover": {
+      "type": "string",
+      "value": "[concat('https://', variables('accountNamePoland'), '.openai.azure.com/')]"
+    },
+    "hinweis": {
+      "type": "string",
+      "value": "Zwei AI Services Accounts erstellt (Sweden Central primaer + Poland Central Failover). Modelle werden von AWEOS ueber Lighthouse in BEIDEN Regionen deployed; LiteLLM uebernimmt den automatischen Failover."
+    }
+  }
+}
